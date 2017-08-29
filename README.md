@@ -1,5 +1,5 @@
 # Meetup - Churrops on DevOps <br> Vault na prática
-<hr>
+
 
 ### Apresentação e considerações
 
@@ -42,7 +42,7 @@ Passo 3 - Configurando o arquivo hosts<br>
 * No meu exemplo o ip da instância é 54.172.229.173
 <pre>
 [vault]
-34.229.22.228
+54.172.229.173
 
 [all:vars]
 # EC2
@@ -66,7 +66,6 @@ $ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts ./tasks/main.yml
 
 ### Configurando o ambiente
 
-    
 Passo  6 - Criando a variável de dentro da instância EC2    
 <pre>
 $ export VAULT_ADDR=https://127.0.0.1:8200
@@ -109,7 +108,7 @@ your vault will remain permanently sealed.
  
 ### Inserindo as chaves 
  
-Passo 9 - Chave 1
+Passo 9 - Chave 1 e Chave 2
 <pre> 
 <b>evandrocouto@desktop:~$</b> vault unseal -tls-skip-verify QLBm12RW4diu7AEwzLW6V7WkEHA9/7OktJ2YcqZ3Vz15
 Sealed: true
