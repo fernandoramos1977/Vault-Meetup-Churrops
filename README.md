@@ -659,6 +659,26 @@ secret_key     	NUvGD5cQpXDYPPUiGTNU7b/HQvElV+jwjFEWYsyO
 security_token 	<nil>
 </pre>
 
+Passo 50 - Criando um policy para o prefix ec2rdsfull, carregando a policy do arquivo ec2rdsfull.json
+<pre>
+$ cd policys
+$ vault write -tls-skip-verify aws/roles/ec2rdsfull policy=@ec2rdsfull.json
+</pre>
+Passo 51 - Gerando o access_key e o secret_key
+
+Obs: A policy ec2rdsfull irá conceder a permissão Full para EC2 e RDS. 
+<pre>
+$ vault read -tls-skip-verify aws/creds/ec2rdsfull
+Key            	Value
+---            	-----
+lease_id       	aws/creds/ec2rdsfull/aefcc6f6-59e9-5be1-cdfa-4b89432a0b73
+lease_duration 	3m0s
+lease_renewable	true
+access_key     	AKIAJ3BCNUC6X2SYYACA
+secret_key     	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
+security_token 	<nil>
+</pre>
+
 ### Lease, Renew, and Revoke
 
 * Por segurança o Vault guarda por um determinado período as informações em metadados contendo a duração do tempo, renovabilidade e muito mais de um secret.
@@ -674,14 +694,14 @@ security_token 	<nil>
 
 * OBs: Com o Backend (Generic Backend Storage) com os secret arbitrários não será possível trabalhar com o lease.
 
-Passo 49 - Ajustando o lease do backend AWS.
+Passo 52 - Ajustando o lease do backend AWS.
 
 <pre>
 $ vault write -tls-skip-verify aws/config/lease lease=30s lease_max=5m
 Success! Data written to: aws/config/lease
 </pre>
 
-Passo 50 - Verificando as alterações
+Passo 53 - Verificando as alterações
 <pre>
 $ vault read -tls-skip-verify aws/creds/dev
 Key            	Value
@@ -696,12 +716,12 @@ security_token 	<nil>
 
 ### Revogando backends 
 
-Passo 51 - Revogando o backend AWS
+Passo 54 - Revogando o backend AWS
 <pre>
 $ vault revoke -tls-skip-verify -prefix aws/
 Success! Revoked the secret with ID 'aws/', if it existed.
 </pre>
-Passo 52 - Revogando o backend GitHub
+Passo 55 - Revogando o backend GitHub
 <pre>
 $  vault revoke -tls-skip-verify -prefix github/
 Success! Revoked the secret with ID 'github/', if it existed.
