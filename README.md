@@ -1,4 +1,4 @@
-# Meetup - Churrops on DevOps <br> Vault na prática
+# [Meetup Churrops] - Iniciando a trilha com o Vault - Hands-on
 
 
 ### Apresentação e considerações
