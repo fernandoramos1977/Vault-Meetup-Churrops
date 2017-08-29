@@ -9,9 +9,8 @@
     * 1 MySQL
     * 1 Vault Server
 
-* Após a configuração teremos um ambiente totalmente disponível para realização dos exemplos que temos abaixo
-* O ambiente foi configurado na AWS com uma instância EC2 t2.micro 
-
+* Após a configuração teremos um ambiente totalmente disponível para realização dos exemplos que teremos logo abaixo
+* O ambiente foi configurado na Amazon AWS em um instância t2.micro, porém é possível que você execute em outros players de Cloud ou até mesmo em seu ambiente local.
 
 ### O que é o Vault HashiCorp?
 
@@ -66,11 +65,11 @@ $ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts ./tasks/main.yml
 
 ### Configurando o ambiente
 
-Passo  6 - Criando a variável de dentro da instância EC2    
+Passo 6 - Criando a variável de dentro da instância EC2    
 <pre>
 $ export VAULT_ADDR=https://127.0.0.1:8200
 </pre>
-Passo 7 - Criando a variável na máquina local
+Passo 7 - Criando a variável no ambiene local
 
 <pre>
 $ export VAULT_ADDR=https://54.172.229.173:8200
@@ -101,11 +100,8 @@ to unseal it again.
 
 Vault does not store the master key. Without at least 3 keys,
 your vault will remain permanently sealed.
-
 </pre>
 
-
- 
 ### Inserindo as chaves 
  
 Passo 9 - Chave 1 e Chave 2
@@ -147,13 +143,12 @@ Bingo!
 <pre>
 <b>evandrocouto@desktop:~$</b> vault unseal -tls-skip-verify
 Vault is already unsealed.
-
 </pre>
 
 * O processo unseal é totalmente stateful, possibilitando que através de outro computador com o Vault instalado, possa executar o processo de desbloqueio (unseal),<br>
 isso quanto o Vault estiver direcionado para o mesmo Vault Server.<br>
 
-* Isso é extremamente importante para o processo de unseal. Somente assim, duas ou mais pessoas poderão liberar o cofre.<br>
+* Isso é extremamente importante para o processo de unseal. Somente assim, duas ou mais pessoas poderão liberar o Vault.<br>
  
 * O Vault pode ser "aberto" de vários computadores e as chaves nunca deverão estarem juntas.<br>
 * Desta forma, um único operador não possuirá chaves suficientes para ser mal-intencionado.
@@ -256,8 +251,6 @@ Success! Deleted 'secret/hello' if it existed.
     * Swift
     * Zookeper
 
-
-
 ### Mount Backend
 * Assim como em um sistema de arquivos normal, o Vault pode montar um backend várias vezes em diferentes pontos de montagem.
 * Também é importante saber que com o Vault é possível aplicar politicas de segurança através de caminhos diferentes.
@@ -286,6 +279,7 @@ generic/    generic    generic_baf5911b    n/a     system       system   false  
 secret/     generic    generic_61fb4a37    n/a     system       system   false           replicated            generic secret storage
 sys/        system     system_997f9d46     n/a     n/a          n/a      false           replicated            system endpoints used for control, policy and debugging
 </pre>
+
 ### Unmount backend
 * Uma vez que o backend for desmontado, todos os seus secrets serão revogados e seus dados excluídos.
 
@@ -317,10 +311,10 @@ Success! Token revoked if it existed.
 </pre>
 
 ### Auth Backends
+
 * Além dos tokens, é possível também adicionar outros métodos de autenticação. 
 * Auth backends permite métodos alternativos de identificação com o Vault. 
 * Essas identidades são vinculadas de volta a um conjunto de políticas de acesso, assim como tokens. 
-* Por exemplo, para ambientes de desktop, a chave privada ou a autenticação baseada em GitHub estão disponíveis.
 
 Passo 22 - Habilitando o método de autenticação pelo GitHub
 <pre>
@@ -352,12 +346,13 @@ Passo 26 - Desativando o backend
 $ vault auth-disable -tls-skip-verify github
 </pre>
 ### Policys 
+
 * As policys do Vault controlam os acessos dos usuários.
 * Para autenticação, o Vault possui várias opções ou backends que podem ser ativados e usados. 
 * Para autorização e políticas (policys), o Vault sempre usa o mesmo formato.
 * Todos os backends de autenticação devem mapear as identidades de volta para as políticas principais configuradas com o Vault.
 * Ao inicializar o Vault, sempre existe uma política (policy) especial que não pode ser removida: (root).
-* Está pol[itica (policy) é uma política especial que lhe dará o acesso de super-user em tudo que há no Vault. 
+* Está politica (policy) é uma política especial que lhe dará o acesso de super-user em tudo que há no Vault. 
 * Uma identidade mapeada para a diretiva root pode fazer qualquer coisa. 
 * As políticas do Vault controlam o acesso do usuário.
 * Para autenticação, o Vault possui várias opções ou backends que podem ser ativadas e usadas. 
@@ -442,7 +437,9 @@ rules	path "secret/github/*" {
   capabilities = ["create", "read", "update", "delete", "list"]
 }
 </pre>
+
 ### Mapeando policys para outros Backends
+
 Passo 33 - Novamente acessando o Vault com o token do GitHub
 <pre>
 $ vault auth -tls-skip-verify -method=github token=1a014ecc8e71d2938abba8d8d8830fd71dd052cd
@@ -454,7 +451,6 @@ token_duration: 2764800
 token_policies: [default]
 </pre>
 Passo 34 - Criando um novo secret no path secret/github "hello" com o valor "world"
-
 <pre>
 $ vault write -tls-skip-verify secret/github/hello value=world
 Error writing data to secret/github/hello: Error making API request.
@@ -724,6 +720,8 @@ Get
 <pre>
 $ python get-secret_hello.py
 </pre>
+
+
 
 
 
