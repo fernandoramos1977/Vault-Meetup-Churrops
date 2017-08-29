@@ -721,10 +721,10 @@ Get
 $ python get-secret_hello.py
 </pre>
 
-Fonte:
+Fonte:<br>
 https://www.vaultproject.io
 
-Blog: 
+Blog:<br>
 http://tutoriaisgnulinux.com
 
 
