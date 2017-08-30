@@ -41,7 +41,7 @@ Passo 3 - Configurando o arquivo hosts<br>
 * No meu exemplo o ip da instância será 54.172.229.173
 
 ### Ambiente
-![Alt text](img/1.png?raw=true "Image 1")
+![Alt text](img/vault-meetup-churrops.png?raw=true "Image 1")
 
 <pre>
 [vault]
