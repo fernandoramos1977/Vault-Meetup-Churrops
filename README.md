@@ -46,7 +46,7 @@ Passo 3 - Configurando o arquivo hosts<br>
 [all:vars]
 # EC2
 ansible_ssh_user=ubuntu
-ansible_ssh_private_key_file=../../keys/Blog-Estudo.pem
+ansible_ssh_private_key_file=../../keys/vault.pem
 
 # SSL
 fqdn=tutoriaisgnulinux.com
