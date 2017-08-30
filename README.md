@@ -42,10 +42,7 @@ Passo 3 - Configurando o arquivo hosts<br>
 
 ### Ambiente
 
-
-->![Alt text](img/vault-meetup-churrops.png?raw=true "Image 1")<-
-
-
+![Alt text](img/vault-meetup-churrops.png?raw=true "Image 1")
 
 <pre>
 [vault]
