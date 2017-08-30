@@ -38,7 +38,8 @@ $ cd Vault-Meetup-Churrops/ansible/vault/
 </pre>
 Passo 3 - Configurando o arquivo hosts<br>
 * No arquivo hosts você deverá informar o ip da instância (AWS - OpenStack) - Ubuntu 16.04<br>
-* No meu exemplo o ip da instância é 54.172.229.173
+* No meu exemplo o ip da instância será 54.172.229.173
+* No diretório keys, deverá conter a chave vault.pem
 <pre>
 [vault]
 54.172.229.173
