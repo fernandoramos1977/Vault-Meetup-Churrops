@@ -684,6 +684,65 @@ secret_key     	athugpiFQQkfv7GwHfqi3KdBLzNuUzxWFs+oifPB
 security_token 	<nil>
 </pre>
 
+### Vault SSH 
+
+* O backend secret SSH do Vault fornece autenticação segura e autorização para acesso a máquinas através do protocolo SSH. 
+* O backend SSH do Vault ajuda a gerenciar a infra-estrutura da máquina, fornecendo várias maneiras de emitir credenciais para o protocolo SSH.
+* Temos três tipos suportados para o backend SSH, são eles:
+	
+#### Signed Certificates
+* O Vault gerencia novas chaves privadas e públicas.
+#### SSH OTP 
+* O Vault emite uma senha SSH de uma única vez (OTP).
+* A principal preocupação com o tipo de backend OTP é a conexão do host remoto com o Vault; se comprometido, um invasor poderia falsificar o servidor do Vault retornando pedido bem-sucedido. 
+#### Dynamic Key:
+* O administrador registra uma chave secret com privilégios. 
+* Para cada solicitação de credencial autorizada, o Vault cria um novo par de chaves SSH e acrescenta a chave pública recém-gerada ao arquivo authorized_keys para o nome de usuário configurado no host remoto. 
+* O Vault usa o script de instalação configurável para conseguir isso.
+
+##### Veremos os métodos Signed Certificates e Dynamic Key
+	
+Passo 52  - Montando o backend SSH
+<pre>
+$ vault mount ssh
+</pre>
+Passo 53 - Carregando a chave (.pem) default, para o Vault  
+<pre>
+$ vault write ssh/keys/jenkins key=@jenkins.pem
+</pre>
+#### Método 1 - (Signed Certificates)
+Passo 54 - Criando a role chamada jenkins (instância - EC2 / IP:54.197.7.243/32)
+<pre>
+$ vault write ssh/roles/jenkins key_type=dynamic key=jenkins admin_user=ubuntu default_user=ubuntu cidr_list=54.197.7.243/32
+</pre>
+Passo 55 - Logando através do Vault na instância (jenkins / IP: 54.197.7.243)
+<pre>
+$ vault ssh -role jenkins ubuntu@54.197.7.243
+</pre>
+#### Método 2 - (Dynamic Key)
+</pre>
+</pre>
+Passo 56 - Gerando uma chave (pem) temporário e salvando no arquivo jenkins-vaul.pem
+<pre>
+$ vault write -format=json ssh/creds/dynamic_key_role ip=54.197.7.243 | jq -r .data.key > jenkins-vault.pem
+</pre>
+Passo 57 - Ajustando a permissão do arquivo (jenkins-vault.pem)
+<pre>
+$ chmod 400 jenkins-vault.pem
+</pre>
+Passo 58 - Logando na instância (jenkins / IP: 54.197.7.243), coma a chave (pem) gerada pelo Vault
+<pre>
+ssh -i jenkins-vault.pem ubuntu@54.197.7.243
+</pre>
+Passo 59 - Verificando os backends montados
+<pre>
+$ vault mounts
+</pre>
+Passo 60 - Desmontando o backend ssh
+<pre>
+$ vault unmount ssh
+<pre>
+
 ### Lease, Renew, and Revoke
 
 * Por segurança o Vault guarda por um determinado período as informações em metadados contendo a duração do tempo, renovabilidade e muito mais de um secret.
@@ -699,14 +758,14 @@ security_token 	<nil>
 
 * OBs: Com o Backend (Generic Backend Storage) com os secret arbitrários não será possível trabalhar com o lease.
 
-Passo 52 - Ajustando o lease do backend AWS.
+Passo 61 - Ajustando o lease do backend AWS.
 
 <pre>
 $ vault write -tls-skip-verify aws/config/lease lease=30s lease_max=5m
 Success! Data written to: aws/config/lease
 </pre>
 
-Passo 53 - Verificando as alterações
+Passo 62 - Verificando as alterações
 <pre>
 $ vault read -tls-skip-verify aws/creds/dev
 Key            	Value
@@ -719,14 +778,16 @@ secret_key     	Z7rswexL1tEvw6u2L4SHrTwNvirPiqxc6i5Qw1Eo
 security_token 	<nil>
 </pre>
 
+
+
 ### Revogando backends 
 
-Passo 54 - Revogando o backend AWS
+Passo 63 - Revogando o backend AWS
 <pre>
 $ vault revoke -tls-skip-verify -prefix aws/
 Success! Revoked the secret with ID 'aws/', if it existed.
 </pre>
-Passo 55 - Revogando o backend GitHub
+Passo 64 - Revogando o backend GitHub
 <pre>
 $  vault revoke -tls-skip-verify -prefix github/
 Success! Revoked the secret with ID 'github/', if it existed.
