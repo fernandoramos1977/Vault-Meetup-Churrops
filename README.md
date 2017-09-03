@@ -741,7 +741,7 @@ $ vault mounts
 Passo 60 - Desmontando o backend ssh
 <pre>
 $ vault unmount ssh
-<pre>
+</pre>
 
 ### Lease, Renew, and Revoke
 
